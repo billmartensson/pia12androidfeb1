@@ -7,30 +7,54 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import se.magictechnology.pia12androidfeb1.databinding.FragmentReadmoreBinding
+import se.magictechnology.pia12androidfeb1.databinding.FragmentStartBinding
 
 class StartFragment : Fragment() {
+
+    private var _binding : FragmentStartBinding? = null
+    private val binding get() = _binding!!
+
+    var letscount = 0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_start, container, false)
+        //return inflater.inflate(R.layout.fragment_start, container, false)
+
+        _binding = FragmentStartBinding.inflate(inflater, container, false)
+        val view = binding.root
+        return view
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        view.findViewById<TextView>(R.id.startText).text = "Hej banan"
+        binding.startText.text = "Hej banan"
 
-        view.findViewById<Button>(R.id.startButton).setOnClickListener {
-            view.findViewById<TextView>(R.id.startText).text = "Hej apelsin"
+        binding.startButton.setOnClickListener {
+
+            letscount = letscount + 1
+
+            binding.startText.text = letscount.toString()
+
         }
 
-        view.findViewById<Button>(R.id.startGoButton).setOnClickListener {
+        binding.startGoButton.setOnClickListener {
+
+            var gofrag = ReadmoreFragment()
+            gofrag.mynumber = letscount
+
             requireActivity().supportFragmentManager
                 .beginTransaction()
-                .add(R.id.fragcon, ReadmoreFragment())
+                .add(R.id.fragcon, gofrag)
                 .addToBackStack(null)
                 .commit()
         }
